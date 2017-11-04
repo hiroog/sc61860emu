@@ -1,4 +1,4 @@
-## 1994 by H.Ogasawara (COR.)
+## 1994/02/16 Hiroyuki Ogasawara (COR.)
 
 	.qinclude:syscall.hed
 

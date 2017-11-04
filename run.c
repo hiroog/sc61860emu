@@ -1,7 +1,8 @@
-/* Copyright 1994 H.Ogasawara (COR.) */
+/* 1994/02/16 Hiroyuki Ogasawara (COR.) */
 
 #include	"reg.h"
 #include	"opexec.h"
+
 
 run_sce( rp )
 T_REG	*rp;
@@ -16,13 +17,25 @@ T_REG	*rp;
 			if( (rp->trace & 4) || rp->pc >= 0x2000 ){
 				switch( cp->length ){
 				case l2B:
+#ifdef _WIN32
+					sprintf_s( opr, 20, "%02x", MEM(rp->pc+1) );
+#else
 					sprintf( opr, "%02x", MEM(rp->pc+1) );
+#endif
 					break;
 				case l3B:
+#ifdef _WIN32
+					sprintf_s( opr, 20, "%02x%02x", MEM(rp->pc+1), MEM(rp->pc+2) );
+#else
 					sprintf( opr, "%02x%02x", MEM(rp->pc+1), MEM(rp->pc+2) );
+#endif
 					break;
 				case l4B:
+#ifdef _WIN32
+					sprintf_s( opr, 20, "%02x %02x%02x", MEM(rp->pc+1), MEM(rp->pc+2), MEM(rp->pc+3) );
+#else
 					sprintf( opr, "%02x %02x%02x", MEM(rp->pc+1), MEM(rp->pc+2), MEM(rp->pc+3) );
+#endif
 					break;
 				default:
 					*opr= '\0';

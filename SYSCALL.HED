@@ -1,4 +1,4 @@
-## 1994 by H.Ogasawara (COR.)
+## 1994/02/16 Hiroyuki Ogasawara (COR.)
 :system_start	.equ:0000
 :power_off	.equ:0029
 :getc	.equ:002f

@@ -1,8 +1,8 @@
-#### oldsce  1994 H.Ogasawara (COR.)
+#### oldsce  1997/04/02 Hiroyuki Ogasawara (COR.)
 ####
 #### -- Win32
 CC	= cl
-CFLAGS	= -O -DLITTLEENDIAN -D_SWIN32
+CFLAGS	= -O2 -DLITTLEENDIAN -D_SWIN32
 PROG	= oldsce.exe
 AWK	= jgawk
 ####
@@ -16,7 +16,7 @@ SCSRC	= sc_add.c sc_jmp.c sc_ld.c sc_sft.c sc_stack.c sc_io.c sc_mv.c
 all: $(PROG) syscall.hed
 
 $(PROG): $(OBJ)
-	$(CC) $(LDFLAG) -o $@ $(OBJ)
+	$(CC) $(LDFLAG) -Fe:$@ $(OBJ)
 
 sc_add.obj:	sc_add.c reg.h
 sc_jmp.obj:	sc_jmp.c reg.h
@@ -33,12 +33,12 @@ run.obj:	run.c reg.h opexec.h
 opexec.obj:	opexec.c opexec.h extern.h
 
 .c.obj:
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -Fo:$@
 ###
 #extern.h: $(SCSRC)
 #	$(AWK) '/^f_/{printf("extern int %s);\n", $$1)}' sc_*.c > $@
-extern.h: $(SCSRC)
-	jperl extern.pl sc_*.c > $@
+#extern.h: $(SCSRC)
+#	jperl extern.pl sc_*.c > $@
 ###
 clean:
 	rm -f *.o *.bak oldsce
@@ -50,8 +50,8 @@ lha:
 	sc_add.c sc_jmp.c sc_ld.c sc_sft.c sc_stack.c sc_mv.c sc_io.c \
 	reg.h opexec.h makesys.pl extern.pl
 ###
-syscall.hed: sysinit
-	jperl makesys.pl > systemp.tmp
-	del syscall.bak
-	ren syscall.hed syscall.bak
-	ren systemp.tmp syscall.hed
+#syscall.hed: sysinit
+#	jperl makesys.pl > systemp.tmp
+#	del syscall.bak
+#	ren syscall.hed syscall.bak
+#	ren systemp.tmp syscall.hed

@@ -1,4 +1,4 @@
-/* Copyright 1994 H.Ogasawara (COR.) */
+/* 1994/02/06 Hiroyuki Ogasawara (COR.) */
 
 #define	REGI	(rp->m.r.i)
 #define	REGJ	(rp->m.r.j)

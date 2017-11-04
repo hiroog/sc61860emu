@@ -1,4 +1,4 @@
-## 1994 by H.Ogasawara (COR.)
+## 1994/02/16 Hiroyuki Ogasawara (COR.)
 ## ニモニック定義による簡易アセンブラ作成例 (最初に ! を付けて表す)
 :LII	.equ:0000
 :LIJ	.equ:0001

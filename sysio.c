@@ -1,4 +1,4 @@
-/* Copyright 1994 H.Ogasawara (COR.) */
+/* 1997/04/02 Hiroyuki Ogasawara (COR.) */
 
 #include	<stdio.h>
 #ifndef _SWIN32

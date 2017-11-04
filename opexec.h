@@ -1,4 +1,4 @@
-/* Copyright 1994 H.Ogasawara (COR.) */
+/* 1994/02/06 Hiroyuki Ogasawara (COR.) */
 
 #define	l1B	1
 #define	l2B	2

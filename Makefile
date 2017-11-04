@@ -1,4 +1,4 @@
-#### oldsce  1994 H.Ogasawara (COR.)
+#### oldsce  1994/02/16 Hiroyuki Ogasawara (COR.)
 ####
 #### -- UNIX
 #CC	= cc

@@ -1,4 +1,4 @@
-/* Copyright 1994 H.Ogasawara (COR.) */
+/* 1994/02/16 Hiroyuki Ogasawara (COR.) */
 
 #include	<stdio.h>
 #include	<stdlib.h>
@@ -25,6 +25,7 @@ char	*file;
 		printf( "'%s' open error\n", file );
 		exit( 1 );
 	}
+	return	0;
 }
 
 bigendian_check()

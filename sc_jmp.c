@@ -1,4 +1,4 @@
-/* Copyright 1994 H.Ogasawara (COR.) */
+/* 1994/02/07 Hiroyuki Ogasawara (COR.) */
 
 #include	"reg.h"
 

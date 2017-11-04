@@ -1,4 +1,4 @@
-/* Copyright 1994 H.Ogasawara (COR.) */
+/* 1994/02/24 Hiroyuki Ogasawara (COR.) */
 
 #include	<stdio.h>
 #include	<stdlib.h>
@@ -61,7 +61,7 @@ T_LV	*lvp;
 }
 
 static unsigned short
-lsearch( name, lvp )
+lsearch_( name, lvp )
 char	*name;
 T_LV	*lvp;
 {
@@ -134,23 +134,23 @@ T_LV	*lvp;
 				break;
 			case '@':
 				i= lc-rp->mem;
-				l= lsearch( cmd+1, lvp );
+				l= lsearch_( cmd+1, lvp );
 				*lc++= i < l ? l-i : i-l;
 				break;
 			case '!':
 			case 'L':
-				*lc++= lsearch( cmd+1, lvp );
+				*lc++= lsearch_( cmd+1, lvp );
 				break;
 			case 'H':
-				*lc++= lsearch( cmd+1, lvp )>>8;
+				*lc++= lsearch_( cmd+1, lvp )>>8;
 				break;
 			case '*':
-				l= lsearch( cmd+1, lvp );
+				l= lsearch_( cmd+1, lvp );
 				*lc++= l>>8;
 				*lc++= l;
 				break;
 			case '_':
-				l= lsearch( cmd+1, lvp )+0xe000;
+				l= lsearch_( cmd+1, lvp )+0xe000;
 				*lc++= l>>8;
 				*lc++= l;
 				break;
