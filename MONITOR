@@ -1,0 +1,142 @@
+## mini monitor 1994 by H.Ogasawara (COR.)
+
+	.qinclude:syscall.hed
+
+	.addr:2000
+
+	0101
+	_prtmsg "** mini monitor **" 0a 00
+##### main loop
+:mainloop
+	_prtmsg "% " 00
+	_liy *inputbuf
+	_gets
+	_lix *inputbuf
+	24
+	7a 06 *retadr
+	69
+		00  *cmd_nret
+		'd' *cmd_dump
+		'g' *cmd_exec
+		's' *cmd_edit
+		'q' *cmd_quit
+		'?' *cmd_help
+		'h' *cmd_help
+	*cmd_err
+  :retadr
+	2d @mainloop
+
+
+#### command error
+:cmd_err
+	_prtmsg "cmd error" 0a 00
+:cmd_nret
+	37
+
+#### command help
+:cmd_help
+	_prtmsg "*command help*" 0a
+		"  d<addr>   memory dump" 0a
+		"  g<addr>   call program" 0a
+		"  s<addr>   edit memory (exit . CR)" 0a
+		"  h/?       print help" 0a
+		"  q         quit" 0a
+		00
+	37
+
+#### --- sub getarg
+:getarg_adr
+	24
+	6720
+	39 @getarg_adr
+	05
+	_atoh
+	89 db
+	_atoh
+	88 db
+	84
+	1388
+	0a
+	05
+	37
+#### command dump
+:cmd_dump
+	78 *getarg_adr
+	_dump
+	_dump
+	_dump
+	_dump
+	37
+
+#### command exec
+:cmd_exec
+	78 *getarg_adr
+	04
+	85
+	59
+	34
+	84
+	59
+	34
+	37
+
+#### command edit
+:cmd_edit
+	78 *getarg_adr
+   :edit_loop
+	04
+	1384
+	90
+	0a
+
+	85
+	59
+	_puthex
+	84
+	59
+	_puthex
+	02 ':'
+	_putc
+	02 ' '
+	_putc
+	05
+	24
+	_puthex
+	02 '-'
+	_putc
+	02 '>'
+	_putc
+	_liy *inputbuf
+	_gets
+	_lix *inputbuf
+	24
+	67 '.'
+	38 @edit_exit
+	6700
+	38 @edit_next
+	05
+	_atoh
+	1390
+	84
+	0a
+	05
+	04
+	52
+	2d @edit_loop
+    :edit_next
+	1390
+	84
+	0a
+	2d @edit_loop
+    :edit_exit
+	37
+
+#### command quit
+:cmd_quit
+	5b 5b
+	_prtmsg "*quit*" 0a 00
+	37
+
+#### buffer
+   :inputbuf
+

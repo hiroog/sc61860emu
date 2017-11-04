@@ -1,0 +1,57 @@
+#### oldsce  1994 H.Ogasawara (COR.)
+####
+#### -- Win32
+CC	= cl
+CFLAGS	= -O -DLITTLEENDIAN -D_SWIN32
+PROG	= oldsce.exe
+AWK	= jgawk
+####
+
+LDFLGA	= -s
+OBJ	= main.obj run.obj opexec.obj hexfile.obj sysio.obj fncsys.obj \
+	sc_add.obj sc_jmp.obj sc_ld.obj sc_sft.obj sc_stack.obj sc_io.obj \
+	sc_mv.obj
+SCSRC	= sc_add.c sc_jmp.c sc_ld.c sc_sft.c sc_stack.c sc_io.c sc_mv.c
+
+all: $(PROG) syscall.hed
+
+$(PROG): $(OBJ)
+	$(CC) $(LDFLAG) -o $@ $(OBJ)
+
+sc_add.obj:	sc_add.c reg.h
+sc_jmp.obj:	sc_jmp.c reg.h
+sc_ld.obj:	sc_ld.c reg.h
+sc_sft.obj:	sc_sft.c reg.h
+sc_stack.obj:	sc_stack.c reg.h
+sc_mv.obj:	sc_mv.c reg.h
+sc_io.obj:	sc_io.c reg.h
+main.obj:	main.c reg.h
+hexfile.obj:	hexfile.c reg.h
+sysio.obj:	sysio.c
+fncsys.obj:	fncsys.c
+run.obj:	run.c reg.h opexec.h
+opexec.obj:	opexec.c opexec.h extern.h
+
+.c.obj:
+	$(CC) $(CFLAGS) -c $< -o $@
+###
+#extern.h: $(SCSRC)
+#	$(AWK) '/^f_/{printf("extern int %s);\n", $$1)}' sc_*.c > $@
+extern.h: $(SCSRC)
+	jperl extern.pl sc_*.c > $@
+###
+clean:
+	rm -f *.o *.bak oldsce
+###
+lha:
+	lha a oldsce00.lzh oldsce.doc oldsce.x \
+	sysinit monitor asmsmpl cmd type ls saikoro asm.hed syscall.hed \
+	makefile main.c hexfile.c sysio.c fncsys.c run.c opexec.c \
+	sc_add.c sc_jmp.c sc_ld.c sc_sft.c sc_stack.c sc_mv.c sc_io.c \
+	reg.h opexec.h makesys.pl extern.pl
+###
+syscall.hed: sysinit
+	jperl makesys.pl > systemp.tmp
+	del syscall.bak
+	ren syscall.hed syscall.bak
+	ren systemp.tmp syscall.hed

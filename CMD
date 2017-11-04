@@ -1,0 +1,66 @@
+## 1994 by H.Ogasawara (COR.)
+
+	.qinclude:syscall.hed
+
+	.addr:2000
+
+	_prtmsg "CmdShell v0.00 - modoki" 0a 00
+	791800
+	.addr:1800
+:loop
+	0101
+	_prtmsg "cmd> " 00
+	_liy *buffer
+	_gets
+	_lix *buffer
+	24 05
+	43
+	3b @loop
+	78 *word
+	6700
+	38 @skip
+	d400
+      :skip
+	84
+	13a0
+	0a
+	_lix *buffer
+	_liy *quitcmd
+	_strcmp
+	43
+	3a @quitexec
+	_liy *filescmd
+	_strcmp
+	43
+	3a @filesexec
+	_hload
+	43
+	28 @err
+	a0
+	1384
+	0a
+	78 2000
+	2d @loop
+:err
+	_prtmsg "command not found." 0a 00
+	2d @loop
+:quitexec
+	37
+:filesexec
+	_files
+	2d @loop
+:word
+	24 6700
+	38 @wordexit
+	67 ' '
+	2908
+	37
+      :wordexit
+	05 37
+
+:quitcmd
+	"quit" 00
+:filescmd
+	"dir" 00
+:buffer
+

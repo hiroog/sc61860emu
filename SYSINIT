@@ -1,0 +1,378 @@
+# system start
+.addr:0000
+:system_start
+	0101
+	025c
+	32
+	_prtmsg "SystemInit v0.02 1994 by COR." 0a 00
+	78 *user
+# power off
+:power_off
+	125f
+	0208
+	db
+	df
+
+###
+### service rourtine
+###
+
+### input
+# 1ch input
+:getc
+	4c
+	37
+# string input
+:gets
+	_getc
+	670a
+	38 @getsend
+	26
+	2d @gets
+      :getsend
+	23
+	26
+	37
+
+### output
+# 1ch output
+:putc
+	125c
+	db
+	5d
+	37
+# CR
+:putcr
+	020a
+	2d @putc
+# strint output
+:print
+	24
+	6700
+	28 @p0
+	37
+	:p0
+	_putc
+	2d 09
+# message output
+:prtmsg
+	22
+	31
+	84
+	0a
+	05
+	_print
+	04
+	22
+	30
+	1384
+	0a
+	37
+
+# hex out
+:puthex
+	34
+	58
+	_putnbl
+	5b
+      :putnbl
+	34
+	640f
+	670a
+	3a @pna
+	7407
+	:pna
+	7430
+	_putc
+	5b
+	37
+
+# dump list
+:dump
+	04
+	85
+	59
+	_puthex
+	84
+	59
+	_puthex
+	05
+
+	02 ':'
+	_putc
+	0220
+	_putc
+
+	020f
+	34
+    :dumpdloop
+	24
+	_puthex
+	0220
+	_putc
+	2f @dumpdloop
+	_putcr
+
+	37
+
+### save,load
+# core load
+# X+1=adr fname
+:bload
+	0201
+	125d db dd
+	04 04
+	_strlen
+	7402
+	125d
+	db dd
+	05 55 dd
+	04 55 dd
+     :fnoutb
+      :CsLOOP
+	04 55
+	6300
+	38 @CsEND
+	dd
+	2d @CsLOOP
+      :CsEND
+	6000
+	dd
+	cc
+	37
+# hload
+# X+1=fname
+:hload
+	0202
+	125d
+	db dd
+    :outbfileout
+	_strlen
+	125d
+	db dd
+	2d @fnoutb
+# bsave
+# X+1=adr len fname
+:bsave
+	0203
+      :fsave
+	125d
+	db dd
+	04 04 04 04
+	_strlen
+	7404
+	125d
+	db dd
+	05 05 05 55 dd
+	04 55 dd
+	04 55 dd
+	04 55 dd
+	2d @fnoutb
+# hsave
+# X+1=adr len fname
+:hsave
+	0204
+	2d @fsave
+# files
+:files
+	0205
+	125d db dd
+	6000 db dd
+      :filesloop
+	cc
+	6700
+	38 @filesend
+	_putc
+	2d @filesloop
+      :filesend
+	37
+# fsize
+# BA=filesize
+:fsize
+	0206
+	125d db dd
+	_outbfileout
+	da cc
+	37
+# rand
+# a= rand
+:rand
+	0207
+	125d db dd
+	6000 dd
+	cc
+	37
+
+### etc
+# mul
+# A=A*B
+:mul_b
+	88
+	54
+	0007
+	da d2 da
+	2a02
+	44
+	5a
+	41
+	2b09
+	59
+	37
+# div
+# A=A/B,B=A%B
+:div_b
+	d1
+	da
+	88 db
+	0207
+	34
+	23
+	da 5a da
+	5a
+	db
+	c7
+	3a03
+	45
+	c2
+	db
+	2f0c
+	da
+	37
+
+# ascii to hex
+:atoh
+	_atonib
+	58
+	83
+	db
+	_atonib
+	47
+	59
+	37
+      :atonib
+	24
+	673a
+	3a @atohskip
+	7507
+      :atohskip
+	640f
+	37
+# strlen
+:strlen
+	23
+	80 db 34
+	40
+	24
+	6700
+	2905
+	5b db
+	0300
+	84 15
+	37
+# strcmp
+:strcmp
+	23
+	80 db 34
+	88
+     :strcmploop
+	40
+	24
+	06 55
+	6700
+	38 @strcmpend
+	c7
+	28 @strcmpend
+	2d @strcmploop
+     :strcmpend
+	45
+	80 5b db
+	0300
+	84 15
+	86 15
+	88 59
+	37
+# strcpy
+:strcpy
+	24 26
+	43
+	2b04
+	37
+
+### macro rourtine
+# X=nn-1
+:lix
+	22
+	31
+	84
+	0a
+	05
+	24
+	da
+	24
+	34
+	04
+	22
+	30
+	50
+	1384
+	0a
+	5b
+	1382
+	84
+	0a
+	05
+	37
+# Y=nn-1
+:liy
+	22
+	31
+	86
+	0a
+	07
+	06
+	57
+	da
+	06
+	57
+	34
+	06
+	22
+	30
+	50
+	1386
+	0a
+	5b
+	1382
+	86
+	0a
+	07
+	37
+
+# X=BA
+.addr:11e9
+	84
+	1302
+	0a
+	37
+# Y=BA
+# 11ee
+	86
+	2d06
+# X=BA-1
+# 11f1
+:ldx_ba
+	f1e9
+	05
+	37
+# Y=BA-1
+# 11f5
+:ldy_ba
+	f1ee
+	07
+	37
+
+# 2000 user area
+.addr:2000
+   :user
+	37
+	.exec:0000

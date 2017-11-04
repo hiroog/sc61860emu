@@ -1,0 +1,41 @@
+## 1994 by H.Ogasawara (COR.)
+
+	.qinclude:syscall.hed
+
+	.addr:2000
+
+	0205
+	125d db dd
+	6000 db dd
+	88 6000 610f
+	89 6000
+      :filesloop
+	cc
+	6700
+	38 @filesend
+	670a
+	28 @filesput
+	c8
+	89 6305
+	28 @nonono
+	6000
+	2c @nanana
+      :nonono
+	88 59 43 640f 34
+	02 ' '
+	_putc
+	2f05
+	02 ' '
+      :nanana
+	88 6000
+	6110
+      :filesput
+	_putc
+	49
+	2d @filesloop
+      :filesend
+	89 6300
+	3803
+	_putcr
+	37
+

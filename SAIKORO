@@ -1,0 +1,35 @@
+## 1994 by H.Ogasawara (COR.)
+
+	.qinclude:syscall.hed
+	.qinclude:asm.hed
+
+	.addr:2000
+
+	!LIA	10
+	!PUSH
+:loop
+	_rand
+	!LIB	06
+	_div_b
+	!EXAB
+	!SET	06 *retadr
+	!CASE
+		00 *sai1
+		01 *sai2
+		02 *sai3
+		03 *sai4
+		04 *sai5
+		05 *sai6
+		*dummy
+   :retadr
+	!LOOP	@loop
+   :dummy
+	!RET
+
+:sai1	_prtmsg "[ е ]1" 0a 00 !RET
+:sai2	_prtmsg "[е е]2" 0a 00 !RET
+:sai3	_prtmsg "[еее]3" 0a 00 !RET
+:sai4	_prtmsg "[: :]4" 0a 00 !RET
+:sai5	_prtmsg "[:е:]5" 0a 00 !RET
+:sai6	_prtmsg "[:::]6" 0a 00 !RET
+

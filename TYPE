@@ -1,0 +1,41 @@
+## 1994 by H.Ogasawara (COR.)
+
+	.qinclude:syscall.hed
+
+	.addr:2000
+	78 *skipspc
+	6700
+	38 @exit
+	_liy *fname
+	_strcpy
+	_lix *fnccmd
+	_bload
+	43
+	28 @err
+	_liy *buffer
+	_lix *fname
+	_fsize
+	_puthex
+	86 14
+	23 26 26 26 26 26
+	_lix *buffer
+	_print
+	37
+   :err
+	_prtmsg "file not found" 0a 00
+   :exit
+	37
+
+   :skipspc
+	24 67 ' '
+	39 04
+	05
+	37
+
+   :fnccmd
+	*buffer
+   :fname
+	"................................"
+:buffer
+
+
